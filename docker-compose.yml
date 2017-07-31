@@ -2,19 +2,38 @@ version: "2"
 services:
   data-loader:
     image: php:7-apache
-  sandbox:
+  rstudio:
+    image: 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-rstudio
+    links:
+      - data-loader
+    environment:
+      USER: test
+      PASSWORD: test
+  jupyter:
     image: 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-jupyter
     links:
       - data-loader
     environment:
       PASSWORD: test
-  proxy:
+  proxy-rstudio:
     image: keboola/docker-sandbox-ssl-proxy
     build: .
     links:
-      - sandbox
+      - rstudio:sandbox
     ports:
       - "6201:443"
+    volumes:
+      - ./nginx/ssl/x.keboola.com.crt:/etc/ssl/certs/nginx/proxy.crt
+      - ./nginx/ssl/x.keboola.com.key:/etc/ssl/certs/nginx/proxy.key
+    environment:
+      KEBOOLA_SANDBOX_PORT: "8787"
+  proxy-jupyter:
+    image: keboola/docker-sandbox-ssl-proxy
+    build: .
+    links:
+      - jupyter:sandbox
+    ports:
+      - "6202:443"
     volumes:
       - ./nginx/ssl/x.keboola.com.crt:/etc/ssl/certs/nginx/proxy.crt
       - ./nginx/ssl/x.keboola.com.key:/etc/ssl/certs/nginx/proxy.key
