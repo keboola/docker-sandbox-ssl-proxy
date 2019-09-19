@@ -51,5 +51,3 @@ services:
     volumes:
       - ./nginx/ssl/x.keboola.com.crt:/etc/ssl/certs/nginx/proxy.crt
       - ./nginx/ssl/x.keboola.com.key:/etc/ssl/certs/nginx/proxy.key
-    environment:
-      KEBOOLA_DATALOADER_PORT: "8788"
