@@ -10,3 +10,14 @@ docker tag keboola/docker-sandbox-ssl-proxy:latest 061240556736.dkr.ecr.us-east-
 docker tag keboola/docker-sandbox-ssl-proxy:latest 061240556736.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:latest
 docker push 061240556736.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:$TRAVIS_TAG
 docker push 061240556736.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:latest
+
+# If it's a semver tag then deploy to production
+if echo ${TRAVIS_TAG} | grep -c '^v\?[0-9]\+\.[0-9]\+\.[0-9]\+$'
+then
+    docker tag keboola/docker-sandbox-ssl-proxy:latest 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:$TRAVIS_TAG
+    docker tag keboola/docker-sandbox-ssl-proxy:latest 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:latest
+    docker push 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:$TRAVIS_TAG
+    docker push 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-sandbox-ssl-proxy:latest
+else
+    echo "Skipping deployment to production, tag ${TRAVIS_TAG} is not semantic."
+fi
