@@ -47,7 +47,7 @@ services:
     links:
       - data-loader-api
     ports:
-      - "6203:443"
+      - "6203:80"
     volumes:
       - ./nginx/ssl/x.keboola.com.crt:/etc/ssl/certs/nginx/proxy.crt
       - ./nginx/ssl/x.keboola.com.key:/etc/ssl/certs/nginx/proxy.key
