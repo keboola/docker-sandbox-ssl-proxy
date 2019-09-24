@@ -2,6 +2,8 @@ version: "2"
 services:
   data-loader:
     image: php:7-apache
+  data-loader-api:
+    image: 061240556736.dkr.ecr.us-east-1.amazonaws.com/keboola/data-loader-api
   rstudio:
     image: 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-rstudio
     links:
@@ -39,4 +41,13 @@ services:
       - ./nginx/ssl/x.keboola.com.key:/etc/ssl/certs/nginx/proxy.key
     environment:
       KEBOOLA_SANDBOX_PORT: "8888"
-
+  proxy-data-loader:
+    image: keboola/docker-sandbox-ssl-proxy
+    build: .
+    links:
+      - data-loader-api
+    ports:
+      - "6203:80"
+    volumes:
+      - ./nginx/ssl/x.keboola.com.crt:/etc/ssl/certs/nginx/proxy.crt
+      - ./nginx/ssl/x.keboola.com.key:/etc/ssl/certs/nginx/proxy.key
