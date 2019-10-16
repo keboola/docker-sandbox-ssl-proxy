@@ -3,7 +3,7 @@ services:
   data-loader:
     image: php:7-apache
   data-loader-api:
-    image: 061240556736.dkr.ecr.us-east-1.amazonaws.com/keboola/data-loader-api
+    image: 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/data-loader-api
   rstudio:
     image: 147946154733.dkr.ecr.us-east-1.amazonaws.com/keboola/docker-rstudio
     links:
